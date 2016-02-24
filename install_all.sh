@@ -34,6 +34,8 @@ fi
 
 dir=$(mktemp --tmpdir -d fblualib-build.XXXXXX)
 
+cores=$(nproc)
+
 echo Working in $dir
 echo
 cd $dir
@@ -90,7 +92,7 @@ echo
 cd $dir/folly/folly
 autoreconf -ivf
 ./configure
-make
+make -j$cores
 sudo make install
 sudo ldconfig # reload the lib paths after freshly installed folly. fbthrift needs it.
 
@@ -101,7 +103,7 @@ echo
 cd $dir/fbthrift/thrift
 autoreconf -ivf
 ./configure
-make
+make -j$cores
 sudo make install
 
 echo
